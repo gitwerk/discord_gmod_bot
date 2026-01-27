@@ -1,118 +1,238 @@
-# Discord Muter for GMod (The Node Bot)
+# Discord Mutebot for TTT2 (Garrys Mod TTT)
 
-![Icon](https://raw.githubusercontent.com/manix84/discord_gmod_addon/master/images/icon/icon_128x.png)
+This mod was fork  [Manix84's Mutebot](https://github.com/manix84/discord_gmod_bot) and was updated and tested 2026.
 
->Dead players tell no tales!
 
-*... and that's basically what this bot does.*
-
-[![price](https://img.shields.io/badge/price-free-brightgreen.svg)](LICENSE)
-[![gmod-addon](https://img.shields.io/badge/gmod-addon-_.svg?colorB=1194EF)](https://wiki.garrysmod.com)
-[![discord-bot](https://img.shields.io/badge/discord-bot-_.svg?colorB=8C9EFF)](https://discord.js.org)
-[![license](https://img.shields.io/github/license/manix84/discord_gmod_bot.svg)](LICENSE)
-
-This mod, in conjunction with the [GMod Addon](https://github.com/manix84/discord_gmod_addon), mutes dead players for X seconds, or unil the end of the round in (Garry's Mod).
 
 ## Features
-- Remote Node Bot (the node bot and the addon don't need to be on the same server, but they can be if you want).
+- Node JS Bot that instantly mutes players on Discord when they die.
 - Secure & Authenticated connection, so no-one should be highjacking your bot communication.
 - Discord Server link. When someone connects, they get told to join your server, if they're not already connected.
 - Mute a Player for the entire round, or simply for a few seconds.
 - Automatically connect players when they join your server. If a new player joins, they're on the Discord server already, and use the same name, they'll get connected without even prompting them.
 - ULX Support:
-  - Added Mute/Unmute in commands menu - Obviously, you can mute/unmute a player from the ULX menu
-  - Added Discord Settings
-    - "Settings" - You can change any of the Console Variables on a per Map basis.
-    - "Player Connections" - You can add a Steam/Discord ID connection from the ULX menu.
-- Node Bot KeepAlive. Some bot hosts kill the bot if they don't get connections after a while. This option will keep the bot running, between sessions.
+    - Easily change Settings via ULX
+    - Add Discord ID's via ULX
+
+<br>
     
-## Getting Started
-If you need a step-by-step tutorial, follow my [guide at steam](http://steamcommunity.com/sharedfiles/filedetails/?id=1351369388)
+
+### important Information READ FIRST!
+You dont need ANY Steam Workshop Addon regarding the Mutebot for it to work. all you need is explaned in this guide. If you have any questions, please open an issue here on github.
+
+This manual is for Windows and Linux. if some steps are different, the guide will clearly state the coresponding command. if no statement is made, the command or step will work on both.
+
+The Manual for the Windows-Version is made for POWERSHELL! Use Powershell insteam of CMD!
+
 
 ### Prerequisites
 - You have to have already installed a Garry's Mod Server with the TTT Gamemode.
-- You must have a [Nodejs](https://nodejs.org) installed locally on your GMod server, or on a publically accessable server (I used [Heroku.com](https://heroku.com), which is the easier of the two options)
+- Your Server must either run on Windows or Linux and you must have Administrator or root access
+- You need to have a Discord voice Channel setup with Administration rights to it
 
-### Usage
-1. First and formost, you need to go setup the Discord Bot, so...
-    - Setup your node server
-        > The following assumes you're using Heroku.com. If not, please skip.
-        - Create a free account on [Heroku.com](https://heroku.com).
-        - Create a pipeline, which deploys the [Discord Gmod Bot](https://github.com/manix84/discord_gmod_bot.git)
-        - Set the Environment Variables:
-            - `API_KEY`: (Optional, but super recommended) This MUST match the GMod server. It can be anything.
-            - `DISCORD_GUILD`: A copy of the Server/Guild ID.
-            - `DISCORD_CHANNEL`: A copy of the Voice Channel ID.
-                - !If you're stuggling to get the Discord Guild/Channel ID, Discord have a [guide](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-) to getting the ID's.
-            - `DISCORD_TOKEN`: This allows the node bot to talk to the Discord Bot (You will get this in Step 3 below)
-                - To get the `DISCORD_TOKEN`, you'll need to create a [Discord Bot](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token). You'll need to follow these instructions to invite the bot, into your server.
-                - Make sure you grant the bot the permissions to Mute Members.
-            - `KEEPALIVE_HOST`: The external Hostname of the bot e.g. my-bot.herokuapp.com
-            - `KEEPALIVE_PORT`: The external Port of the bot e.g. 443
-            - `KEEPALIVE_METHOD`: The Method to use for doing the keepalive requests. http | https
-            - `KEEPALIVE_ENABLED`: If keepalive requests should be used. 1 | 0
-    - Make sure the Node Bot server is running. Heroku will run is as a web instance.
-    - If configuring the Discord Bot on the same server as the Garry's Mod Server (i.e. it'll connect to localhost), add `-allowlocalhttp` to the srcds launch options.
-2. Install this Mod (I recommend using the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2155238885))
-    - If you don't want to use steam workshop, go over to: [manix84/discord_gmod_addon](https://github.com/manix84/discord_gmod_addon.git) and just extract the project into `/garrysmod/addons/discord'.
-3. Make sure you've got the `server convars` in `/garrysmod/cfg/server.cfg`
-    - `discord_endpoint`: The Node Bot remote endpoint (EG: https://my-awesome-discord-bot.herokuapp.com:443)
-    - `discord_api_key`: This MUST match any value you set for the Node Bot. 
-    - `discord_server_link`: This is the share link that is advertised on your gmod server.
-    - `discord_mute_round`: Do you want to mute the end of the round after death? (1=Yes, 0=No)
-    - `discord_mute_duration`: How long do you want the player to be muted after death, in seconds. Does nothing if `discord_mute_round` is set to `1`.
-    - `discord_auto_connect`: If enabled, when an unknown player connects, it will try to match the Steam Nickname, to the Discord Nickname.  (1=Enabled, 0=Disabled)
-4. You're all setup, so now, connect your Steam and Discord accounts:
-    - Connect your Steam Account with the bot by typing `!discord YourDiscordTag` in the ingame chat (E.G `!discord Manix84`).
-        - If you're having trouble, try your full discord name (E.G: `!discord Manix84#8429`). This should only be necessary if there are two or more people with the same name.
-    - So long as you're in correct `DISCORD_GUILD` and `DISCORD_CHANNEL`, the game state is **in progress**, you're **connected to discord** and you die in a supported GMod gamemode (TTT, TTT2 - Advanced Update, or Murder), the bot will mute you!
+<br><br>
 
-## Docker Usage
-Currently there is no publicly hosted Docker Image so you will have to build it yourself via
-```
-docker build -t discord_gmod_bot .
-```
-To start the docker Container run
-```
-docker run --name discord_gmod_bot \
-    -p 37405:37405 \
-    -e PORT=37405 \
-    -e API_KEY="API_KEY" \
-    -e DISCORD_GUILD="DISCORD_GUILD" \
-    -e DISCORD_CHANNEL="DISCORD_CHANNEL" \
-    -e DISCORD_TOKEN="DISCORD_TOKEN" \
-    -e KEEPALIVE_HOST="KEEPALIVE_HOST" \
-    -e KEEPALIVE_PORT="KEEPALIVE_PORT" \
-    -e KEEPALIVE_METHOD="KEEPALIVE_METHOD" \
-    -e KEEPALIVE_ENABLED="KEEPALIVE_ENABLED" \
-    discord_gmod_bot
-```
-The Usage of the env variables is the same as above.
+## Installation Part 1: Generate Discord credentials
 
-## Credits
+1. Login to the Discord Developers Page [here](https://discord.com/developers/applications) and create a <b>New Application</b>
+2. Select a Name for your application
+3. Navigate to the OAtuh2 Tab. 
+4. Copy and store the following informations for later use: 
+    - `Client ID`
+    - `Client Secret` (Click on "Reset Secret")
+
+5. Open the Discord App on your PC and navigate to your Discord Channel
+6. Right-Click onto the Voice-Channel which you plan to use for TTT and select <b>Copy Channel ID</b> and store for later use.
+7. Left Click on your username on the bottom left, and click <b>Copy User ID</b>
+
+You should now have the following information:
+- `Client ID`
+- `Client Secret`
+- `Channel ID`
+- `User ID`
+
+<br>
+<br>
+
+## Installation Part 2: Node.js
+
+### If you are on Windows:
+Navigate to [the Nodejs Website](https://nodejs.org/en/download) and download the Windows <b>Installer.msi
+
+![alt text](images/nodejs_download_windows.png)</b> 
+
+### If you are on Linux:
+Select the LTS Version for Linux using <b>nvm with npm</b>. 
+Copy the prompt to clipboard and run it on your machine.
+
+![alt text](images/nodejs_download_linux.png)
+
+(If you have an error message regarding curl, you might need to install curl first. using this command)
+```
+sudo apt-get install curl
+```
+<br><br>
+
+## Installation Part 3: Install git
+
+### If you are on Windows:
+Navigate to [the git website](https://git-scm.com/install/windows) and download the Windows installer. 
+
+### If you are on Linux:
+Run this command:
+```
+apt-get install git
+```
+<br><br>
+
+## Installation Part 4: Clone Repo & install dependencies
+
+Make a folder on your System 
+
+<b>Windows</b> e.g C:\mutebot<br>
+<b>Linux</b> e.g /home/your-username/mutebot/
+
+and open a Terminal (Powershell or Terminal) and run the following command: 
+
+```
+git clone https://github.com/gitwerk/TTT-Discord-Muter-Bot
+```
+![alt text](images/git-clone.png)
+
+Navigate into the <b>node bot</b> folder within the open terminal 
+<br><br>
+<b>Windows</b>
+```
+cd .\TTT-Discord-Muter-Bot\node-bot\
+```
+<br>
+<b>Linux</b>
+
+```
+cd TTT-Discord-Muter-Bot/node-bot/
+```
+
+Install the Node JS dependensies by running the following command 
+```
+npm install
+```
+![alt text](images/npm-install.png)
+<br><br>
+
+## Installation Part 5: Setup the Node Bot
+
+Rename the <b>.env.example</b> file to <b>.env</b> either in the explorer or via Command. 
+
+<b>Windows</b>
+```
+mv .\.env.example .env
+```
+
+<b>Linux</b>
+```
+mv .env.example .env
+```
+or on Windows via Explorer:
+![alt text](images/rename-example.png)
+
+Open the <b>.env</b> file in an Editor of your choise (e.g Notepad, NP++ or Nano on Linux)
+
+<b>Windows</b>
+```
+notepad .\.env
+```
+
+<b>Linux</b>
+```
+nano .env
+```
+Replace the corresponding strings in the file: 
+
+`DISCORD_TOKEN` = `Your Client Secret`<br>
+`DISCORD_CHANNEL` = `Your Voice Channel ID`<br>
+`DISCORD_GUID` = `Your Client ID`
+
+Save the file.
+
+## Installation Part 6: Copy the Addon to your Server
+
+1. Navigate back to the root folder <b>TTT-Discord-Muter-Bot</b>
+2. Copy the folder <b>mutebot-server-addon</b> to your Garrys Mod Server addons folder. <br>
+Usually it looks like this: <b>garrysmod/addons/</b>
+
+## Installation Part 7: Adjust the server.cfg of your Garrys Mod Server
+
+1. Navigate to your Garrys Mod Sever folder into the cfg directory <br>
+<b>garrysmod/cfg/</b>
+2. Open the <b>server.cfg</b> with an Editor of your choice and add the following lines:
+
+```
+// --- Mutebot ---
+discord_endpoint       "http://localhost:37405"
+discord_api_key			"mutebot"
+
+discord_mute_duration 	0
+discord_debug 			0
+```
+You could change existing values, or add those entries if wished:
+
+`discord_server_link`: The Link of your Discord server. Displayed as Text for new players. purely cosmetic.<br>
+`discord_mute_round`: Do you want to mute the end of the round after death? (1=Yes, 0=No)<br>
+`discord_mute_duration`: How long do you want the player to be muted after death, in seconds. (0=till the end of the round)
+`discord_auto_connect`: If enabled, when an unknown player connects, it will try to match the Steam Nickname, to the Discord Nickname.(1=Enabled, 0=Disabled)<br>
+`discord_debug`: Display debug messaged in the console.
+
+## Installation Part 8: Copy the Autostart File
+
+Final installation step is to copy the <b>death_mute.lua</b> file to your server. 
+
+1. Navigate to the git clone on your Maschine:<br>
+<b>TTT-Discord-Muter-Bot\lua\autorun\server</b>
+
+Copy the File <b>death_mute.lua</b> to the same directory on your Server:
+<br><b>garrysmod/lua/autorun/server/</b>
+
+## Usage Part 1: How to start the bot
+
+To use the bot, all you need is to <b>start the node bot.</b>
+
+1. Open a Terminal (Powershell or Terminal) on your Machine. 
+2. Navigate to the <b>node-bot</b> directory
+3. Run the following Command:
+```
+Node .
+```
+4. Just leave the console open like this for the duration of your game-session. you should see in the console who connects and if someone gets muted.<br>
+![alt text](images/node_start.png)
+
+## Usage Part 2: How to link your Discord user with the bot
+
+Every user that connects to the server, needs to link himself to the bot. <br>Otherwise IT WILL NOT WORK.
+<br>
+1. Every user needs to collect their `User ID` by Left Click on their username on the bottom left, and click <b>Copy User ID</b>
+2. Once connected to the Garrys Mod Server, they need to paste this command into the Chat:<br>`!discrod USER ID`<br><br>e.g
+```
+!discord 508381664309673900
+```
+alternatively, the Server-Admin can paste the Discord ID of each player via ULX.<br>
+
+![alt text](images/ULX1.png)
+
+<br><br><br><br>
+
+# Credits
 - Marcel Transier - The original creator of [ttt_discord_bot](https://github.com/marceltransier/ttt_discord_bot.git), from which this is based.
 - I used [discord.js](https://discord.js.org) in this project. Thanks for the easy opportunity writing a discord bot in javascript!
 - Thanks for the great Garry's Mod gamemode [Trouble in Terrorist Town](http://ttt.badking.net) I made this bot for.
 
-## Contributing
-1. Fork it (<https://github.com/manix84/discord_gmod_addon/fork>)
-2. Create your feature branch (`git checkout -b feature/featureName`)
-3. Commit your changes (`git commit -am 'Add some featureName'`)
-4. Push to the branch (`git push origin feature/featureName`)
-5. Create a new Pull Request
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Screenshots
-### ULX Commands
-![ULX Cmds](https://i.imgur.com/pWUKAO8.png)
+### ULX Settings
+![ULX Settings](images/ULX2.png)
 
-### ULX Settings - Settings
-![ULX Settings - Settings](https://i.imgur.com/dDrGiuA.png)
-
-### ULX Settings - Player Connections
-![ULX Settings - Player Connections](https://i.imgur.com/r1caKBV.png)
 
 ### Muting in action
-![Muting in action](https://i.imgur.com/a2eBESP.png)
+![alt text](images/Muting-In-Action.png)
