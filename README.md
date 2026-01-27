@@ -1,5 +1,7 @@
 # Discord Mutebot for TTT2 (Garrys Mod TTT)
 
+Mutebot that mutes players in Discord if they die in garrys mod Trouble in Terrorist Town. Tested and Working in 2026
+
 This mod was fork  [Manix84's Mutebot](https://github.com/manix84/discord_gmod_bot) and was updated and tested 2026.
 
 
